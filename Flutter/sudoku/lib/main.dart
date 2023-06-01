@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/boards_data.dart';
 
 import 'main_menu.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  BoardsData();
   runApp(const MainApp());
 }
 
@@ -11,7 +14,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: Center(
           child: MainMenu(),
