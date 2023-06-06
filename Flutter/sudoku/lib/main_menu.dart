@@ -21,7 +21,7 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     currentButtons =
-        showDifficulty ? difficultyButtons() : mainMenuButtons(context);
+        showDifficulty ? difficultyButtons(context) : mainMenuButtons(context);
 
     log('MainMenu:build()');
     return MaterialApp(
@@ -79,7 +79,7 @@ class _MainMenuState extends State<MainMenu> {
         ));
   }
 
-  Widget difficultyButtons() {
+  Widget difficultyButtons(BuildContext context) {
     return SizedBox(
         width: _buttonWidth,
         child: Column(
@@ -102,6 +102,14 @@ class _MainMenuState extends State<MainMenu> {
                 action: () {
                   log('button pressed: hard');
                   log(BoardsData().boardList[1]);
+                }),
+            createButton(
+                title: "Cancel",
+                action: () {
+                  log('button pressed: back');
+                  setState(() {
+                    showDifficulty = false;
+                  });
                 }),
           ],
         ));
