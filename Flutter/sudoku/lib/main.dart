@@ -14,6 +14,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MainMenu();
+    return const MaterialApp(
+      home: MainMenu(),
+    );
   }
 }

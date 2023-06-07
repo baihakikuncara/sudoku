@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ class _MainMenuState extends State<MainMenu> {
   static const double _buttonWidth = 200;
   static const double _buttonMargin = 8;
   late Widget currentButtons;
+  final math.Random generator = math.Random();
 
   bool showDifficulty = false;
   @override
@@ -24,21 +26,19 @@ class _MainMenuState extends State<MainMenu> {
         showDifficulty ? difficultyButtons(context) : mainMenuButtons(context);
 
     log('MainMenu:build()');
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-            child: Row(
-          children: [
-            const Spacer(
-              flex: 1,
-            ),
-            currentButtons,
-            const Spacer(
-              flex: 1,
-            ),
-          ],
-        )),
-      ),
+    return Scaffold(
+      body: Center(
+          child: Row(
+        children: [
+          const Spacer(
+            flex: 1,
+          ),
+          currentButtons,
+          const Spacer(
+            flex: 1,
+          ),
+        ],
+      )),
     );
   }
 
@@ -90,7 +90,6 @@ class _MainMenuState extends State<MainMenu> {
                 title: "Easy",
                 action: () {
                   log('button pressed: easy');
-                  log(BoardsData().boardList[0]);
                 }),
             createButton(
                 title: "Medium",
