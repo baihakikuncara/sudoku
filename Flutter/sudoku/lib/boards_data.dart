@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 
 class BoardsData {
@@ -5,6 +7,7 @@ class BoardsData {
 
   static final BoardsData _instance = BoardsData._internal();
   List<String> boardList = [];
+  Random rng = Random();
 
   factory BoardsData() {
     return _instance;

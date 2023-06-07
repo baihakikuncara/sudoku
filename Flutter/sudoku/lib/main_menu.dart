@@ -1,7 +1,7 @@
 import 'dart:developer';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:sudoku/board_screen.dart';
 import 'package:sudoku/boards_data.dart';
 import 'package:sudoku/menu_buttons.dart';
 import 'package:tuple/tuple.dart';
@@ -15,15 +15,14 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> with MenuButtons {
   late Widget currentButtons;
-  final math.Random generator = math.Random();
 
   bool showDifficulty = false;
   @override
   Widget build(BuildContext context) {
+    log('MainMenu:build()');
     currentButtons =
         showDifficulty ? difficultyButtons(context) : mainMenuButtons(context);
 
-    log('MainMenu:build()');
     return Scaffold(
       body: Center(
           child: Row(
@@ -41,6 +40,7 @@ class _MainMenuState extends State<MainMenu> with MenuButtons {
   }
 
   Widget mainMenuButtons(BuildContext context) {
+    log('MainMenu:mainMenuButtons()');
     return createButtons([
       Tuple2('New Game', () {
         setState(() {
@@ -53,15 +53,34 @@ class _MainMenuState extends State<MainMenu> with MenuButtons {
   }
 
   Widget difficultyButtons(BuildContext context) {
+    log('MainMenu:difficultyButtons()');
     return createButtons([
-      Tuple2('Easy', () {}),
-      Tuple2('Medium', () {}),
-      Tuple2('Hard', () {}),
+      Tuple2('Easy', () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                BoardScreen(selectRandomBoard(), dif: Difficulty.easy)));
+      }),
+      Tuple2('Medium', () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                BoardScreen(selectRandomBoard(), dif: Difficulty.medium)));
+      }),
+      Tuple2('Hard', () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                BoardScreen(selectRandomBoard(), dif: Difficulty.hard)));
+      }),
       Tuple2('Cancel', () {
         setState(() {
           showDifficulty = false;
         });
       }),
     ]);
+  }
+
+  String selectRandomBoard() {
+    log('MainMenu:selectRandomBoard()');
+    var index = BoardsData().rng.nextInt(BoardsData().boardList.length);
+    return BoardsData().boardList[index];
   }
 }
