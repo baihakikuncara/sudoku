@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sudoku/board_screen.dart';
 import 'package:sudoku/boards_data.dart';
 import 'package:sudoku/menu_buttons.dart';
+import 'package:sudoku/board.dart';
 import 'package:tuple/tuple.dart';
 
 class MainMenu extends StatefulWidget {

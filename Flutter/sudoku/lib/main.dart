@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sudoku/boards_data.dart';
 
@@ -14,6 +16,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('MainApp:build()');
     return const MaterialApp(
       home: MainMenu(),
     );

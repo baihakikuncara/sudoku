@@ -1,85 +1,66 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sudoku/boards_data.dart';
-
-enum Difficulty {
-  easy(20),
-  medium(30),
-  hard(40),
-  none(0);
-
-  const Difficulty(this.value);
-  final int value;
-}
+import 'package:sudoku/board.dart';
 
 class BoardScreen extends StatelessWidget {
-  static const int _range = 10;
-  static const int _boardSize = 9;
-  List<List> board = [];
+  static const int _margin = 8;
+  late final Board board;
 
   BoardScreen(String data, {Difficulty dif = Difficulty.medium, super.key}) {
     log('BoardScreen(): data: $data dif:$dif');
-    board = List.generate(_boardSize, (row) {
-      return List.generate(_boardSize, (col) => 0);
-    });
-
-    if (data.length != _boardSize * _boardSize) {
+    if (data.length != Board.boardSize * Board.boardSize) {
       log('BoardScreen: wrong data');
       return;
     }
-    var index = 0;
-    for (var row = 0; row < _boardSize; row++) {
-      for (var col = 0; col < _boardSize; col++) {
-        board[row][col] = int.parse(data[index]);
-        index++;
-      }
-    }
-    setDifficulty(dif);
+    board = Board(data: data, dif: dif);
     boardToString();
   }
 
   @override
   Widget build(BuildContext context) {
     log('BoardScreen:build()');
+    int boardLength = math.min(MediaQuery.of(context).size.shortestSide.toInt(),
+            MediaQuery.of(context).size.longestSide ~/ 2) -
+        _margin * 2;
+    double cellSize = (boardLength / Board.boardSize).floorToDouble();
+
     return Scaffold(
       body: Center(
-        child: Text(boardToString()),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            for (int row = 0; row < Board.boardSize; row++)
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    for (int col = 0; col < Board.boardSize; col++)
+                      SizedBox(
+                        width: cellSize,
+                        height: cellSize,
+                        child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child:
+                                  Text('${board.getValue(row: row, col: col)}'),
+                            )),
+                      )
+                  ]),
+          ],
+        ),
       ),
     );
   }
 
-  void setDifficulty(Difficulty dif) {
-    int step = 0;
-    if (dif != Difficulty.none) {
-      step = dif.value + BoardsData().rng.nextInt(_range);
-    }
-
-    var row = 0, col = 0;
-    while (step > 0) {
-      if (BoardsData().rng.nextBool()) {
-        do {
-          row = BoardsData().rng.nextInt(_boardSize);
-          col = BoardsData().rng.nextInt(_boardSize);
-        } while (board[row][col] == 0);
-        board[row][col] = 0;
-        step--;
-      } else {
-        do {
-          row = BoardsData().rng.nextInt(_boardSize);
-          col = BoardsData().rng.nextInt(_boardSize);
-        } while (board[row][col] == 0 || board[col][row] == 0);
-        board[row][col] = 0;
-        board[col][row] = 0;
-        step -= 2;
-      }
-    }
-    log('BoardScreen:setDifficulty(): dif: $dif, step: $step');
-  }
-
   String boardToString() {
     String s = '';
-    for (List row in board) {
+    for (List row in board.board) {
       for (int val in row) {
         s += '$val';
       }
