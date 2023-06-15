@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:sudoku/boards_data.dart';
+import 'package:sudoku/data_board.dart';
 
-import 'main_menu.dart';
+import 'screen_home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     log('MainApp:build()');
     return const MaterialApp(
-      home: MainMenu(),
+      home: HomeScreen(),
     );
   }
 }

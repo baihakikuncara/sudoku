@@ -1,20 +1,20 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:sudoku/board_screen.dart';
-import 'package:sudoku/boards_data.dart';
-import 'package:sudoku/menu_buttons.dart';
+import 'package:sudoku/screen_board.dart';
+import 'package:sudoku/data_board.dart';
+import 'package:sudoku/button_menu.dart';
 import 'package:sudoku/board.dart';
 import 'package:tuple/tuple.dart';
 
-class MainMenu extends StatefulWidget {
-  const MainMenu({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<MainMenu> createState() => _MainMenuState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainMenuState extends State<MainMenu> with MenuButtons {
+class _HomeScreenState extends State<HomeScreen> with MenuButtons {
   late Widget currentButtons;
 
   bool showDifficulty = false;
