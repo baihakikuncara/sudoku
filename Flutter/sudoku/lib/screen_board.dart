@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:sudoku/board.dart';
+import 'package:sudoku/widget_board.dart';
 
 class BoardScreen extends StatelessWidget {
   static const int _margin = 8;
@@ -28,32 +29,7 @@ class BoardScreen extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            for (int row = 0; row < Board.boardSize; row++)
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    for (int col = 0; col < Board.boardSize; col++)
-                      SizedBox(
-                        width: cellSize,
-                        height: cellSize,
-                        child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blueAccent),
-                            ),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child:
-                                  Text('${board.getValue(row: row, col: col)}'),
-                            )),
-                      )
-                  ]),
-          ],
-        ),
+        child: BoardWidget(board, cellSize),
       ),
     );
   }

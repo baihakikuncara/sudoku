@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'boards_data.dart';
+import 'data_board.dart';
 
 enum Difficulty {
   easy(30),
