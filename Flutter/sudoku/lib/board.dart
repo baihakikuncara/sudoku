@@ -41,7 +41,7 @@ class Board {
     return true;
   }
 
-  int getValue({required int row, required int col}) {
+  int getValue(int row, int col) {
     return board[row][col];
   }
 

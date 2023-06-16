@@ -22,8 +22,9 @@ class BoardWidget extends StatelessWidget {
 
   final Board data;
   final double cellSize;
+  final Function setValue;
 
-  const BoardWidget(this.data, this.cellSize, {super.key});
+  const BoardWidget(this.data, this.cellSize, this.setValue, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,7 @@ class BoardWidget extends StatelessWidget {
     for (var r = 0; r < Board.boardSize; r++) {
       List<Widget> row = [];
       for (var c = 0; c < Board.boardSize; c++) {
-        //row.add(createBlock(rowBlock, colBlock));
-        row.add(createCell(val: data.getValue(row: r, col: c), row: r, col: c));
+        row.add(createCell(val: data.getValue(r, c), row: r, col: c));
       }
       rows.add(Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -66,10 +66,12 @@ class BoardWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: rows,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: blockRows,
+        IgnorePointer(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: blockRows,
+          ),
         ),
       ],
     );
@@ -83,6 +85,7 @@ class BoardWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           log('cell tapped: value:$val, row:$row, col:$col');
+          setValue(row, col);
         },
         child: DecoratedBox(
           decoration:
