@@ -21,8 +21,6 @@ class _HomeScreenState extends State<HomeScreen> with MenuButtons {
   @override
   Widget build(BuildContext context) {
     log('MainMenu:build()');
-    currentButtons =
-        showDifficulty ? difficultyButtons(context) : mainMenuButtons(context);
 
     return Scaffold(
       body: Center(
@@ -31,7 +29,18 @@ class _HomeScreenState extends State<HomeScreen> with MenuButtons {
           const Spacer(
             flex: 1,
           ),
-          currentButtons,
+          Stack(
+            children: [
+              Visibility(
+                visible: !showDifficulty,
+                child: mainMenuButtons(context),
+              ),
+              Visibility(
+                visible: showDifficulty,
+                child: difficultyButtons(context),
+              ),
+            ],
+          ),
           const Spacer(
             flex: 1,
           ),
