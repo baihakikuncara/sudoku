@@ -24,28 +24,29 @@ class _HomeScreenState extends State<HomeScreen> with MenuButtons {
 
     return Scaffold(
       body: Center(
-          child: Row(
-        children: [
-          const Spacer(
-            flex: 1,
-          ),
-          Stack(
-            children: [
-              Visibility(
-                visible: !showDifficulty,
-                child: mainMenuButtons(context),
-              ),
-              Visibility(
-                visible: showDifficulty,
-                child: difficultyButtons(context),
-              ),
-            ],
-          ),
-          const Spacer(
-            flex: 1,
-          ),
-        ],
-      )),
+        child: Row(
+          children: [
+            const Spacer(
+              flex: 1,
+            ),
+            Stack(
+              children: [
+                Visibility(
+                  visible: !showDifficulty,
+                  child: mainMenuButtons(context),
+                ),
+                Visibility(
+                  visible: showDifficulty,
+                  child: difficultyButtons(context),
+                ),
+              ],
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
