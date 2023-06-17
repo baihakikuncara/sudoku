@@ -8,6 +8,7 @@ import 'package:sudoku/widget_board.dart';
 class BoardScreen extends StatefulWidget {
   static const int _margin = 8;
   late final Board board;
+  double cellSize = 0;
 
   BoardScreen(String data, {Difficulty dif = Difficulty.medium, super.key}) {
     log('BoardScreen(): data: $data dif:$dif');
@@ -29,11 +30,11 @@ class _BoardScreenState extends State<BoardScreen> {
     int boardLength = math.min(MediaQuery.of(context).size.shortestSide.toInt(),
             MediaQuery.of(context).size.longestSide ~/ 2) -
         BoardScreen._margin * 2;
-    double cellSize = (boardLength / Board.boardSize).floorToDouble();
+    widget.cellSize = (boardLength / Board.boardSize).floorToDouble();
 
     return Scaffold(
       body: Center(
-        child: BoardWidget(widget.board, cellSize, (int row, int col) {
+        child: BoardWidget(widget.board, widget.cellSize, (int row, int col) {
           int val = widget.board.getValue(row, col) == 0 ? 1 : 0;
           setState(() {
             widget.board.setValue(value: val, row: row, col: col);

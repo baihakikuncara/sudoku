@@ -22,13 +22,48 @@ class BoardWidget extends StatelessWidget {
 
   final Board data;
   final double cellSize;
-  final Function setValue;
+  final Function setInput;
 
-  const BoardWidget(this.data, this.cellSize, this.setValue, {super.key});
+  const BoardWidget(this.data, this.cellSize, this.setInput, {super.key});
 
   @override
   Widget build(BuildContext context) {
     log('BoardWidget:build()');
+
+    return Stack(
+      children: [
+        createBoard(),
+        createBlockBorder(),
+      ],
+    );
+  }
+
+  Widget createCell({required val, required row, required col}) {
+    log('BoardWidget:createCell(val:$val, row:$row, col:$col)');
+    return SizedBox(
+      width: cellSize,
+      height: cellSize,
+      child: GestureDetector(
+        onTap: () {
+          log('cell tapped: value:$val, row:$row, col:$col');
+          setInput(row, col);
+        },
+        child: DecoratedBox(
+          decoration:
+              data.isEditable(row, col) ? cellDecoration : fixedCellDecoration,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Text(
+              val == 0 ? ' ' : '$val',
+              style: data.haveDuplicate(row, col) ? duplicateCell : normalCell,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget createBoard() {
     List<Widget> rows = [];
     for (var r = 0; r < Board.boardSize; r++) {
       List<Widget> row = [];
@@ -41,6 +76,14 @@ class BoardWidget extends StatelessWidget {
         children: row,
       ));
     }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: rows,
+    );
+  }
+
+  Widget createBlockBorder() {
     List<Widget> blockRows = [];
     for (var r = 0; r < Board.blockSize; r++) {
       List<Widget> row = [];
@@ -59,45 +102,11 @@ class BoardWidget extends StatelessWidget {
         children: row,
       ));
     }
-    return Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: rows,
-        ),
-        IgnorePointer(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: blockRows,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget createCell({required val, required row, required col}) {
-    log('BoardWidget:createCell(val:$val, row:$row, col:$col)');
-    return SizedBox(
-      width: cellSize,
-      height: cellSize,
-      child: GestureDetector(
-        onTap: () {
-          log('cell tapped: value:$val, row:$row, col:$col');
-          setValue(row, col);
-        },
-        child: DecoratedBox(
-          decoration:
-              data.isEditable(row, col) ? cellDecoration : fixedCellDecoration,
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Text(
-              val == 0 ? ' ' : '$val',
-              style: data.haveDuplicate(row, col) ? duplicateCell : normalCell,
-            ),
-          ),
-        ),
+    return IgnorePointer(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: blockRows,
       ),
     );
   }
