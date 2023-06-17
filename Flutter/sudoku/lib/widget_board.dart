@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sudoku/board.dart';
 
 class BoardWidget extends StatelessWidget {
-  static const TextStyle normalCell = TextStyle(color: Colors.black);
-  static const TextStyle duplicateCell = TextStyle(color: Colors.red);
   static final BoxDecoration blockDecoration = BoxDecoration(
     border: Border.all(
       color: Colors.deepPurple,
@@ -24,7 +22,10 @@ class BoardWidget extends StatelessWidget {
   final double cellSize;
   final Function setInput;
 
-  const BoardWidget(this.data, this.cellSize, this.setInput, {super.key});
+  var globalKey;
+  BoardWidget(this.data, this.cellSize, this.setInput, {super.key}) {
+    globalKey = GlobalKey();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +40,16 @@ class BoardWidget extends StatelessWidget {
   }
 
   Widget createCell({required val, required row, required col}) {
-    log('BoardWidget:createCell(val:$val, row:$row, col:$col)');
+    //log('BoardWidget:createCell(val:$val, row:$row, col:$col)');
     return SizedBox(
       width: cellSize,
       height: cellSize,
       child: GestureDetector(
         onTap: () {
           log('cell tapped: value:$val, row:$row, col:$col');
-          setInput(row, col);
+          if (data.isEditable(row, col)) {
+            setInput(row, col);
+          }
         },
         child: DecoratedBox(
           decoration:
@@ -55,7 +58,12 @@ class BoardWidget extends StatelessWidget {
             fit: BoxFit.contain,
             child: Text(
               val == 0 ? ' ' : '$val',
-              style: data.haveDuplicate(row, col) ? duplicateCell : normalCell,
+              style: TextStyle(
+                color: data.haveDuplicate(row, col) ? Colors.red : Colors.black,
+                fontWeight: data.isEditable(row, col)
+                    ? FontWeight.normal
+                    : FontWeight.bold,
+              ),
             ),
           ),
         ),
