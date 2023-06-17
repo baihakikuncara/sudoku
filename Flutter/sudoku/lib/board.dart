@@ -35,6 +35,9 @@ class Board {
   }
 
   bool setValue({required int value, required int row, required int col}) {
+    if (value < 0 || value > boardSize) return false;
+    if (row < 0 || row >= boardSize) return false;
+    if (col < 0 || col >= boardSize) return false;
     if (!isEditable(row, col)) return false;
     board[row][col] = value;
     checkComplete();
