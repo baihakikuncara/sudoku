@@ -31,10 +31,9 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     log('BoardScreen:build()');
-    int boardLength = math.min(MediaQuery.of(context).size.shortestSide.toInt(),
-            MediaQuery.of(context).size.longestSide ~/ 2) -
+    int boardLength = MediaQuery.of(context).size.shortestSide.toInt() -
         BoardScreen._margin * 2;
-    cellSize = (boardLength / (Board.boardSize + 2)).floorToDouble();
+    cellSize = (boardLength / (Board.boardSize + 3)).floorToDouble();
     var inputPositionX =
         MediaQuery.of(context).size.width / 2 - (cellSize * 1.5);
     inputPositionX -= (4 - selectedColumn) * cellSize;
