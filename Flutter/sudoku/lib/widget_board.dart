@@ -22,10 +22,7 @@ class BoardWidget extends StatelessWidget {
   final double cellSize;
   final Function setInput;
 
-  var globalKey;
-  BoardWidget(this.data, this.cellSize, this.setInput, {super.key}) {
-    globalKey = GlobalKey();
-  }
+  const BoardWidget(this.data, this.cellSize, this.setInput, {super.key});
 
   @override
   Widget build(BuildContext context) {

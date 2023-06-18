@@ -1,23 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sudoku/screen_board.dart';
-import 'package:sudoku/data_board.dart';
-import 'package:sudoku/button_menu.dart';
+import 'package:flutter/services.dart';
 import 'package:sudoku/board.dart';
-import 'package:tuple/tuple.dart';
+import 'package:sudoku/screen_board.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
+  static const double _margin = 8;
+  static const double _width = 200;
+
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> with MenuButtons {
-  late Widget currentButtons;
-
-  bool showDifficulty = false;
   @override
   Widget build(BuildContext context) {
     log('MainMenu:build()');
@@ -29,18 +23,7 @@ class _HomeScreenState extends State<HomeScreen> with MenuButtons {
             const Spacer(
               flex: 1,
             ),
-            Stack(
-              children: [
-                Visibility(
-                  visible: !showDifficulty,
-                  child: mainMenuButtons(context),
-                ),
-                Visibility(
-                  visible: showDifficulty,
-                  child: difficultyButtons(context),
-                ),
-              ],
-            ),
+            difficultyButtons(context),
             const Spacer(
               flex: 1,
             ),
@@ -50,48 +33,41 @@ class _HomeScreenState extends State<HomeScreen> with MenuButtons {
     );
   }
 
-  Widget mainMenuButtons(BuildContext context) {
-    log('MainMenu:mainMenuButtons()');
-    return createButtons([
-      Tuple2('New Game', () {
-        setState(() {
-          showDifficulty = true;
-        });
-      }),
-      Tuple2('Continue', () {}),
-      Tuple2('Exit', () {}),
-    ]);
-  }
-
   Widget difficultyButtons(BuildContext context) {
     log('MainMenu:difficultyButtons()');
-    return createButtons([
-      Tuple2('Easy', () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                BoardScreen(selectRandomBoard(), dif: Difficulty.easy)));
-      }),
-      Tuple2('Medium', () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                BoardScreen(selectRandomBoard(), dif: Difficulty.medium)));
-      }),
-      Tuple2('Hard', () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                BoardScreen(selectRandomBoard(), dif: Difficulty.hard)));
-      }),
-      Tuple2('Cancel', () {
-        setState(() {
-          showDifficulty = false;
-        });
-      }),
-    ]);
+    return SizedBox(
+      width: _width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          createButton('Easy', () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const BoardScreen(Difficulty.easy)));
+          }),
+          createButton('Medium', () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const BoardScreen(Difficulty.easy)));
+          }),
+          createButton('Hard', () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const BoardScreen(Difficulty.easy)));
+          }),
+          createButton('Exit', () {
+            if (Platform.isAndroid) SystemNavigator.pop();
+          }),
+        ],
+      ),
+    );
   }
 
-  String selectRandomBoard() {
-    log('MainMenu:selectRandomBoard()');
-    var index = BoardsData().rng.nextInt(BoardsData().boardList.length);
-    return BoardsData().boardList[index];
+  Widget createButton(String text, Function() fun) {
+    return Container(
+      margin: const EdgeInsets.all(_margin),
+      child: ElevatedButton(
+        onPressed: fun,
+        child: Text(text),
+      ),
+    );
   }
 }

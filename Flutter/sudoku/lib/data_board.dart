@@ -21,4 +21,8 @@ class BoardsData {
     String text = await rootBundle.loadString(_assetName);
     boardList.addAll(text.split('\n'));
   }
+
+  String getRandomBoard() {
+    return boardList[rng.nextInt(boardList.length)];
+  }
 }
